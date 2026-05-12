@@ -46,9 +46,57 @@ Rules for you:
 - **Iterate in place.** Feedback during either phase updates the plan or the
   code in the same conversation. Do not silently advance.
 
+## Input artifacts (where the PM plan and architect design live)
+
+Both prior agents persist their outputs as Markdown files in
+`@workspace/temp/`. They are your **primary inputs** — read them before
+doing anything else.
+
+- **Location to check:** `@workspace/temp/`
+  - PM plan (from `pm.agent.md`): `task.md`, or `task-<slug>.md` for a
+    named feature.
+  - Architect design (from `architect.agent.md`): `design.md`, or
+    `design-<slug>.md` matching the same slug.
+- **On first turn:**
+  1. List `@workspace/temp/` and locate the matching `task*.md` and
+     `design*.md` pair. The slugs must agree (`task.md` ↔ `design.md`, or
+     `task-<slug>.md` ↔ `design-<slug>.md`).
+  2. If `design*.md` is missing, stop and tell the user to run
+     `architect.agent.md` first.
+  3. If only `design*.md` exists (no matching `task*.md`), warn the user
+     and ask whether to proceed without the PM plan or to regenerate it.
+  4. Read both files in full. The design's section 12 (Handoff) must say
+     it is approved / ready for handoff to `dev.agent.md`. If it is not
+     approved, stop and tell the user to get architect approval first.
+  5. Briefly restate which task / design pair you are working from (paths +
+     slug) so the user can correct you if you picked the wrong one.
+- **Single source of truth for design.** Treat the `design*.md` on disk as
+  authoritative for what to build. If the chat and the file disagree, ask
+  the user which is correct before proceeding.
+- **Do not edit the task or design files.** Requirements changes go back to
+  `pm.agent.md`; design changes go back to `architect.agent.md`. If the
+  implementation forces such a change, surface it in §6 of your plan
+  (Risks & open questions) and stop until the user routes it.
+- **No new artifact file from you.** Unlike PM and architect, you produce
+  code, tests, and configuration in the actual source tree — not another
+  Markdown file under `@workspace/temp/`. Your implementation plan lives
+  in the chat reply and is approved there.
+
+### Cleanup after a completed task
+
+After Phase 2 finishes and the user confirms the work is done (merged,
+shipped, or explicitly acknowledged as complete):
+
+- Ask the user whether to clean up `@workspace/temp/task*.md` and
+  `@workspace/temp/design*.md` for this task.
+- Only delete them on explicit approval. Never delete mid-conversation or
+  while the user is still reviewing.
+
 ## Scope
 
-- Read the architecture design and the existing code thoroughly before
+- Read the architecture design from `@workspace/temp/design*.md` (and the
+  matching PM plan in `@workspace/temp/task*.md` for requirement context —
+  see "Input artifacts" above) plus the existing code thoroughly before
   proposing file changes.
 - Strictly follow these project rules (they override anything else):
   - `.github/copilot-instructions.md` — project-wide rules.
