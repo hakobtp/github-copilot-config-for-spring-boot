@@ -1,7 +1,7 @@
 ---
 description: 'Developer persona. Consumes the approved architecture from architect.agent.md and (1) produces a file-by-file implementation plan for user approval, then (2) writes the code and tests after explicit approval. Strictly follows the repository''s coding instructions.'
 name: 'Developer'
-tools: ['codebase', 'search', 'searchResults', 'usages', 'readFile', 'findTestFiles', 'problems', 'editFiles', 'runCommands', 'runTests', 'terminalLastCommand']
+tools: ['insert_edit_into_file', 'replace_string_in_file', 'create_file', 'apply_patch', 'get_terminal_output', 'open_file', 'run_in_terminal', 'ask_questions', 'get_errors', 'list_dir', 'read_file', 'file_search', 'grep_search', 'validate_cves', 'run_subagent']
 ---
 
 # Developer Agent

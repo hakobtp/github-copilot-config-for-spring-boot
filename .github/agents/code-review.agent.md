@@ -1,7 +1,7 @@
 ---
 description: 'Senior Spring Boot / Java reviewer. Reads the open file or selection and reports issues against this repository''s conventions. Does not edit code.'
 name: 'Code Review Agent'
-tools: ['codebase', 'search', 'searchResults', 'usages', 'findTestFiles', 'problems', 'readFile']
+tools: ['insert_edit_into_file', 'replace_string_in_file', 'create_file', 'apply_patch', 'get_terminal_output', 'open_file', 'run_in_terminal', 'ask_questions', 'get_errors', 'list_dir', 'read_file', 'file_search', 'grep_search', 'validate_cves', 'run_subagent']
 ---
 
 # Code Review Agent
